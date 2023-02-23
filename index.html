@@ -40,17 +40,12 @@
 		request.open('GET', 'data/' + string + '.txt');
 		// request.responseType = 'blob';
 		request.onload = function() {
-			var reader = new FileReader();
-			reader.readAsText(request.response);
+			const text = this.responseText;
 
-			reader.onload =  function(progressEvent) {
-				const text = this.result;
-
-				var lines = text.split('\n');
-				for (var line = 0; line < lines.length; line++) {
-					console.log(lines[line]);
-				}
-			};
+			var lines = text.split('\n');
+			for (var line = 0; line < lines.length; line++) {
+				console.log(lines[line]);
+			}
 		};
 		request.send();
 
