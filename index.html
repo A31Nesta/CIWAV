@@ -41,7 +41,7 @@
 		request.responseType = 'blob';
 		request.onload = function() {
 			var reader = new FileReader();
-			reader.readAsDataURL(request.response);
+			reader.readAsText(request.response);
 
 			reader.onload =  function(progressEvent) {
 				const text = this.result;
