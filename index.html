@@ -15,6 +15,10 @@
 		?
 		<br><br>
 		<button id="calculate" onclick="buttonPress()">Well, Can I?</button>
+		<br><br>
+		<input type="text" id="preferredTimeStart" name="preferredTimeStart" value="16:00:00">
+		<br>
+		<input type="text" id="preferredTimeEnd" name="preferredTimeEnd" value="23:00:00">
 	</p>
 
 	<br>
@@ -23,6 +27,7 @@
 	
 </div>
 
+<!-- JavaScroopt goes here :) -->
 <script>
 	var input = document.getElementById("vtuberName");
 	var button = document.getElementById("calculate");
@@ -62,9 +67,50 @@
 			}
 
 			// Calculate
-			for (var i = 0; i < startTimes.length; i++) {
-				console.log('Start: ' + startTimes[i] + ' | Duration: ' + durations[i]);
+			// How Much can I Watch
+			var ptStartArr = document.getElementById("preferredTimeStart").value.split(':');
+			var ptEndArr = document.getElementById("preferredTimeEnd").value.split(':');
+
+			var myPreferredTimeStart = [Number(ptStartArr[0]), Number(ptStartArr[1]), Number(ptStartArr[2])];
+			var myPreferredTimeEnd = [Number(ptEndArr[0]), Number(ptEndArr[1]), Number(ptEndArr[2])];
+
+			var preferredTimeSecStart = 3600 * myPreferredTimeStart[0] + 60 * myPreferredTimeStart[1] + myPreferredTimeStart[2];
+			var preferredTimeSecEnd = 3600 * myPreferredTimeEnd[0] + 60 * myPreferredTimeEnd[1] + myPreferredTimeEnd[2];
+
+			var averageWatchPercentage;
+			for (let i = 0; i < durations.length; i++) {
+				let sectionsStart = startTimes[i].split(':');
+				let sectionsDuration = durations[i].split(':');
+				let startSecs = 3600 * Number(sectionsStart[0]) + 60 * Number(sectionsStart[1]) + Number(sectionsStart[2]);
+				let durationSecs = 3600 * Number(sectionsDuration[0]) + 60 * Number(sectionsDuration[1]) + Number(sectionsDuration[2]);
+
+				let canIWatchStart = false;
+				let canIWatchEnd = false;
+
+				if (preferredTimeSecStart > startSecs && preferredTimeSecEnd > startSecs) {
+					canIWatchStart = true;
+				}
+				if (preferredTimeSecEnd > startSecs+durationSecs && preferredTimeSecStart < startSecs+durationSecs) {
+					canIWatchEnd = true;
+				}
+
+				if (canIWatchStart && canIWatchEnd) {
+					percentage += 100;
+				}
+				else if (!canIWatchStart && canIWatchEnd) {
+					// I start watching in the middle of the stream
+					let watchedTime = (startSecs+durationSecs) - preferredTimeSecStart;
+
+					percentage += (watchedTime/durationSecs) * 100;
+				}
+				else if (canIWatchStart && !canIWatchEnd) {
+					// I stop watching in the middle of the stream
+					let watchedTime = preferredTimeSecEnd - startSecs;
+
+					percentage += (watchedTime/durationSecs) * 100;
+				}
 			}
+			percentage /= durations.length;
 
 			var canIWatch;
 
