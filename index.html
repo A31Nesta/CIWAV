@@ -22,7 +22,7 @@
 	<p id="explanation"></p>
 	
 </div>
-<!--  -->
+
 <script>
 	var input = document.getElementById("vtuberName");
 	var button = document.getElementById("calculate");
@@ -43,8 +43,13 @@
 			var reader = new FileReader();
 			reader.readAsDataURL(request.response);
 
-			reader.onload =  function(e) {
-				console.log('DataURL:', e.target.result);
+			reader.onload =  function(progressEvent) {
+				const text = this.result;
+
+				var lines = text.split('\n');
+				for (var line = 0; line < lines.length; line++) {
+					console.log(lines[line]);
+				}
 			};
 		};
 		request.send();
@@ -75,7 +80,7 @@
 				resultElement.innerHTML = "No";
 				resultElement.className = "no";
 
-				explanationElement.innerHTML = "The ratio between Streamed Time and your Watch Time is " + percentage/100 + " to 1" + 
+				explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
 												".<br> You can only watch parts of " +
 												input.value + "'s streams and not full streams if you manage to catch them streaming.";
 				break;
@@ -83,7 +88,7 @@
 				resultElement.innerHTML = "Yes";
 				resultElement.className = "yes";
 
-				explanationElement.innerHTML = "The ratio between Streamed Time and your Watch Time is " + percentage/100 + " to 1" + 
+				explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
 												".<br> You should be able to watch most of " + 
 												input.value + "'s streams, even completely.";
 				break;
@@ -91,7 +96,7 @@
 				resultElement.innerHTML = "Sometimes";
 				resultElement.className = "sometimes";
 
-				explanationElement.innerHTML = "The ratio between Streamed Time and your Watch Time is " + percentage/100 + " to 1" + 
+				explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
 												".<br> You can watch some of " + 
 												input.value + "'s streams, sometimes you can, sometimes you can't and sometimes you can watch a little.";
 				break;
