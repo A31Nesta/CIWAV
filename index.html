@@ -34,14 +34,14 @@
 	});
 
 	function calculate(string) {
-		var percentage = 0;
-
-		var startTimes;
-		var durations;
-
 		var request = new XMLHttpRequest();
 		request.open('GET', 'data/' + string + '.txt');
 		request.onload = function() {
+			var percentage = 0;
+
+			var startTimes = [];
+			var durations = [];
+
 			const text = this.responseText;
 
 			var lines = text.split('\n');
@@ -57,17 +57,58 @@
 				if (durations == null) {
 					durations = [parts[1]];
 				} else {
-					durations.push(parts[2]);
+					durations.push(parts[1]);
 				}
+			}
+
+			// Calculate
+			for (var i = 0; i < startTimes.length; i++) {
+				console.log('Start: ' + startTimes[i] + ' | Duration: ' + durations[i]);
+			}
+
+			var canIWatch;
+
+			if (percentage > 60.0) {
+				canIWatch = 1; // true
+			} else if (percentage > 30.0) {
+				canIWatch = 2; // sometimes
+			} else {
+				canIWatch = 0; // no
+			}
+
+			var resultElement = document.getElementById("result");
+			var explanationElement = document.getElementById("explanation");
+			switch (canIWatch) {
+				case 0:
+					resultElement.innerHTML = "No";
+					resultElement.className = "no";
+
+					explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
+													".<br> You can only watch parts of " +
+													input.value + "'s streams and not full streams if you manage to catch them streaming.";
+					break;
+				case 1:
+					resultElement.innerHTML = "Yes";
+					resultElement.className = "yes";
+
+					explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
+													".<br> You should be able to watch most of " + 
+													input.value + "'s streams, even completely.";
+					break;
+				case 2:
+					resultElement.innerHTML = "Sometimes";
+					resultElement.className = "sometimes";
+
+					explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
+													".<br> You can watch some of " + 
+													input.value + "'s streams, sometimes you can, sometimes you can't and sometimes you can watch a little.";
+					break;
+				default:
+					resultElement.innerHTML = "What";
+					break;
 			}
 		};
 		request.send();
-
-		for (var i = 0; i < startTimes.length; i++) {
-			console.log('Start: ' + startTimes[i] + ' | Duration: ' + durations[i]);
-		}
-
-		return percentage;
 	}
 
 	// Fcuntion
@@ -76,47 +117,6 @@
 		var input = document.getElementById("vtuberName");
 
 		var percentage = calculate(input.value);
-		var canIWatch;
-
-		if (percentage > 60.0) {
-			canIWatch = 1; // true
-		} else if (percentage > 30.0) {
-			canIWatch = 2; // sometimes
-		} else {
-			canIWatch = 0; // no
-		}
-
-		var resultElement = document.getElementById("result");
-		var explanationElement = document.getElementById("explanation");
-		switch (canIWatch) {
-			case 0:
-				resultElement.innerHTML = "No";
-				resultElement.className = "no";
-
-				explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
-												".<br> You can only watch parts of " +
-												input.value + "'s streams and not full streams if you manage to catch them streaming.";
-				break;
-			case 1:
-				resultElement.innerHTML = "Yes";
-				resultElement.className = "yes";
-
-				explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
-												".<br> You should be able to watch most of " + 
-												input.value + "'s streams, even completely.";
-				break;
-			case 2:
-				resultElement.innerHTML = "Sometimes";
-				resultElement.className = "sometimes";
-
-				explanationElement.innerHTML = "The ratio between your Watch Time and the Streamed Time is " + percentage/100 + " to 1" + 
-												".<br> You can watch some of " + 
-												input.value + "'s streams, sometimes you can, sometimes you can't and sometimes you can watch a little.";
-				break;
-			default:
-				resultElement.innerHTML = "What";
-				break;
-		}
 	}
 </script>
 
