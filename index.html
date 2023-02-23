@@ -96,18 +96,21 @@
 
 				if (canIWatchStart && canIWatchEnd) {
 					percentage += 100;
+					console.log("Full Stream");
 				}
 				else if (!canIWatchStart && canIWatchEnd) {
 					// I start watching in the middle of the stream
 					let watchedTime = (startSecs+durationSecs) - preferredTimeSecStart;
 
 					percentage += (watchedTime/durationSecs) * 100;
+					console.log("watched time: " + watchedTime + " | duration: " + durationSecs);
 				}
 				else if (canIWatchStart && !canIWatchEnd) {
 					// I stop watching in the middle of the stream
 					let watchedTime = preferredTimeSecEnd - startSecs;
 
 					percentage += (watchedTime/durationSecs) * 100;
+					console.log("watched time: " + watchedTime + " | duration: " + durationSecs);
 				}
 			}
 			percentage /= durations.length;
