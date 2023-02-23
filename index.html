@@ -37,8 +37,8 @@
 		var percentage = 0;
 
 		var request = new XMLHttpRequest();
-		request.open('GET', 'data/' + string + '.txt', true);
-		request.responseType = 'blob';
+		request.open('GET', 'data/' + string + '.txt');
+		// request.responseType = 'blob';
 		request.onload = function() {
 			var reader = new FileReader();
 			reader.readAsText(request.response);
