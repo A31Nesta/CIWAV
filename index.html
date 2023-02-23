@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CIWAV</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div>
+	<h1>Can I Watch A VTuber</h1>
+
+	<p class="h2">
+		named
+			<input type="text" id="vtuberName" name="vtuberName">
+		?
+		<br><br>
+		<button id="calculate" onclick="buttonPress()">Well, Can I?</button>
+	</p>
+
+	<br>
+	<h2 id="result"></h2>
+	<p id="explanation"></p>
+	
+</div>
+
+<script>
+	var input = document.getElementById("vtuberName");
+	var button = document.getElementById("calculate");
+	input.addEventListener("keypress", function(event) {
+	  if (event.key === "Enter") {
+		event.preventDefault();
+		button.click();
+	  }
+	});
+
+	function calculate(string) {
+		var percentage = 0;
+
+		var request = new XMLHttpRequest();
+		request.open('GET', 'data/' + string + '.txt', true);
+		request.responseType = 'blob';
+		request.onload = function() {
+			var reader = new FileReader();
+			reader.readAsDataURL(request.response);
+
+			reader.onload =  function(e) {
+				console.log('DataURL:', e.target.result);
+			};
+		};
+		request.send();
+
+		return percentage;
+	}
+
+	// Fcuntion
+	function buttonPress() {
+		var button = document.getElementById("calculate");
+		var input = document.getElementById("vtuberName");
+
+		var percentage = calculate(input.value);
+		var canIWatch;
+
+		if (percentage > 60.0) {
+			canIWatch = 1; // true
+		} else if (percentage > 30.0) {
+			canIWatch = 2; // sometimes
+		} else {
+			canIWatch = 0; // no
+		}
+
+		var resultElement = document.getElementById("result");
+		var explanationElement = document.getElementById("explanation");
+		switch (canIWatch) {
+			case 0:
+				resultElement.innerHTML = "No";
+				resultElement.className = "no";
+
+				explanationElement.innerHTML = "The ratio between Streamed Time and your Watch Time is " + percentage/100 + " to 1" + 
+												".<br> You can only watch parts of " +
+												input.value + "'s streams and not full streams if you manage to catch them streaming.";
+				break;
+			case 1:
+				resultElement.innerHTML = "Yes";
+				resultElement.className = "yes";
+
+				explanationElement.innerHTML = "The ratio between Streamed Time and your Watch Time is " + percentage/100 + " to 1" + 
+												".<br> You should be able to watch most of " + 
+												input.value + "'s streams, even completely.";
+				break;
+			case 2:
+				resultElement.innerHTML = "Sometimes";
+				resultElement.className = "sometimes";
+
+				explanationElement.innerHTML = "The ratio between Streamed Time and your Watch Time is " + percentage/100 + " to 1" + 
+												".<br> You can watch some of " + 
+												input.value + "'s streams, sometimes you can, sometimes you can't and sometimes you can watch a little.";
+				break;
+			default:
+				resultElement.innerHTML = "What";
+				break;
+		}
+	}
+</script>
+
+</body>
+</html>

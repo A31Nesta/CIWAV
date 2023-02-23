@@ -1,0 +1,103 @@
+@font-face {
+  font-family: acme;
+  src: url('font/Acme-Regular.ttf');
+}
+
+@font-face {
+  font-family: fredoka-one;
+  src: url('font/FredokaOne-Regular.ttf');
+}
+
+@font-face {
+  font-family: indie-flower;
+  src: url('font/IndieFlower-Regular.ttf');
+}
+
+body {
+    background-color: #7e7189;
+}
+
+h1 {
+  color: black;
+  font-family: fredoka-one;
+  font-weight: normal;
+  font-size: 72px;
+  text-align: center;
+}
+h2 {
+  color: #ffb872;
+  font-family: acme;
+  font-weight: normal;
+  font-size: 42px;
+  text-align: center;
+  text-shadow: 2px 2px 10px black;
+}
+
+p {
+  color: #ffffff;
+  font-family: indie-flower;
+  font-size: 32px;
+  text-align: center;
+}
+
+div {
+  max-width: 1280px;
+  max-height: 300px;
+  /* background-color: red; */
+  
+  position: absolute;
+  top: -300px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  margin: auto;
+}
+
+input[type=text] {
+  padding: 0px 5px;
+  background-color: #1f1f2b;
+  border-radius: 10px;
+  box-sizing: border-box;
+
+  color: #ffb872;
+  font-family: indie-flower;
+  font-size: 32px;
+}
+
+button {
+  background-color: #76568b;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 10px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+
+  color: #ffb872;
+  font-family: indie-flower;
+  font-size: 32px;
+}
+button:hover {
+  background-color: #61496e;
+}
+
+/* H2 style for P's */
+.h2 {
+  color: #ffb872;
+  font-family: acme;
+  font-weight: normal;
+  font-size: 42px;
+  text-align: center;
+  text-shadow: 2px 2px 10px black;
+}
+
+.yes {
+  color: greenyellow;
+}
+.no {
+  color: red;
+}
+.sometimes {
+  color: #ffb872;
+}
